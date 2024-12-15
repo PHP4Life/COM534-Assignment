@@ -3,6 +3,8 @@ import androidx.compose.ui.window.application
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
-        views.loginOrRegisterView()
+        App()
     }
 }
+
+
