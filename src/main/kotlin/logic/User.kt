@@ -25,7 +25,7 @@ class RegularUser(name: String, password: String, email: String, loggedIn: Boole
     override fun getUserType(): String {
         // Responsible for identifying the user type
         // Return a string of the user type
-        return "$name is a Regular user"
+        return "Regular"
     }
 }
 
@@ -36,6 +36,8 @@ class AdminUser(name: String, password: String, email: String, loggedIn: Boolean
     override fun getUserType(): String {
         // Responsible for identifying the user type
         // Return a string of the user type
-        return "$name is an Admin user"
+
+        // Change this to return this what user type this is
+        return "Admin"
     }
 }

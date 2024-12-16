@@ -6,6 +6,8 @@
 
 package logic
 
+import daos.ExposedUserDao
+
 class UserAccounts {
     // User Accounts class, responsible for storing users in a list and all its operations,
     // editing the user's details and delete a room from the list
@@ -13,20 +15,36 @@ class UserAccounts {
     // Use of aggregation to store users in the mutable list
 
     fun getUsers(): List<User> {
-        return users
+        val usersFromDB = ExposedUserDao().getUsersFromDB()
+        for (userDB in usersFromDB) {users.add(userDB)}
+        return usersFromDB
     }
 
-    fun addUser(user: User) : String {
-        // Parameter: user - takes an object of type user
-        // Creates either an admin or regular user object,
-        // based on the data entered. This is added to the accounts object's list
-        // Returns: A string message to notify what user was added.
-        users.add(user)
-        return when (user) {
-            is AdminUser -> "Admin user added: ${user.name} \n"
-            else -> "Regular user added: ${user.name} \n"
+    fun signUp(name: String, password: String, email: String) : User? {
+        // Checks to see if a user exists
+        val foundUsername = getUsers().find { it.name == name }
+        if (foundUsername != null) {return null}
+        else {
+            val newlyCreatedUser = RegularUser(name, password, email)
+            // Only used once in this scope, so far
+            ExposedUserDao().insertUser(newlyCreatedUser)
+            return newlyCreatedUser
         }
     }
+
+//    fun addUsers() : String {
+//        // Adds users to the mutable list in the UserAccounts Object
+//        // based on the data entered. This is added to the accounts object's list
+//        // Returns: A string message to notify what user was added.
+//        //TODO: Change to be able to add users
+//        val usersFromDB = ExposedUserDao().getUsersFromDB()
+//        for (userDB in usersFromDB) {users.add(userDB)}
+//
+//        return when (user) {
+//            is AdminUser -> "Admin user added: ${user.name} \n"
+//            else -> "Regular user added: ${user.name} \n"
+//        }
+//    }
 
     fun deleteUser(user: User) {
         users.remove(user)
