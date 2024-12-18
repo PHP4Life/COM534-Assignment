@@ -15,9 +15,10 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import logic.Room
+import logic.User
 
 
-data class RoomView(val rooms: List<Room>, val bookComputer: Boolean) : Screen {
+data class RoomView(val user: User, val rooms: List<Room>, val bookComputer: Boolean) : Screen {
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
@@ -36,7 +37,7 @@ data class RoomView(val rooms: List<Room>, val bookComputer: Boolean) : Screen {
                                     .clickable {},
                                 onClick = {
                                     selectedRoom.value = room
-                                    if (bookComputer && selectedRoom.value != null) {navigator.push(BookComputer(room))}
+                                    if (bookComputer && selectedRoom.value != null) {navigator.push(BookComputer(user, room))}
                                 }
                             ) {
                                 Column(
@@ -60,7 +61,10 @@ data class RoomView(val rooms: List<Room>, val bookComputer: Boolean) : Screen {
                         Text("Please contact your administrator to add the room")
                     }
             }
-            Column(Modifier.fillMaxSize().wrapContentSize(Alignment.BottomCenter)) { Button(onClick = {navigator.pop()}, Modifier.padding(horizontal = 2.dp)) { Text("Return to Main Menu") } }
+            Column(Modifier.fillMaxSize().wrapContentSize(Alignment.BottomCenter)) {
+                Button(onClick = {navigator.pop()}, Modifier.padding(horizontal = 2.dp)) {
+                    Text("Return to Main Menu") }
+            }
         }
     }
 

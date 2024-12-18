@@ -8,24 +8,21 @@ package logic
 abstract class Room(
     var roomNumber: Int, val building: Building,
     var timeSlots: List<String> = listOf("9am-11am", "11am-1pm", "1pm-3pm", "3pm-5pm"),
-    val daysOfTheWeek: List<String> = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+    val daysOfTheWeek: List<String> = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"),
+    val numOfComputer: Int
 ) {
-    /**
-     * Abstract room class to store the computers of the room
-     *
-     * Brief state:
-     * "All computers in a given lab have the same operating system  (Windows, Linux or Mac)."
-     *  So use Room as the abstract class - then use specific OS Room subclasses.
-     *
-     * While integrating, the brief describes that timeslots should not be hard coded and need to be set per room,
-     * not per computer. So this has been updated to reflect that
-     */
     private var computers = mutableListOf<Computer>()
 
     abstract fun getOperatingSystem(): String
 
     fun addComputer(computer: Computer) {
         computers.add(computer)
+    }
+
+    fun addComputers(numOfComputersToAdd: Int) {
+        repeat(numOfComputersToAdd) {
+            computers.add(Computer(it + 1, this, this.timeSlots, this.daysOfTheWeek));
+        }
     }
 
     fun getComputers() : List<Computer> {
@@ -64,10 +61,8 @@ abstract class Room(
     }
 }
 
-class WindowsRoom(roomNumber: Int,
-                  building: Building,
-                  timeSlots: List<String>,
-                  daysOfTheWeek: List<String>) : Room(roomNumber, building, timeSlots, daysOfTheWeek) {
+class WindowsRoom(roomNumber: Int, building: Building, timeSlots: List<String>, daysOfTheWeek: List<String>, numOfComputer: Int)
+    : Room(roomNumber, building, timeSlots, daysOfTheWeek, numOfComputer) {
     /**
      * Room with Windows Operating systems on the Computers
      */
@@ -76,10 +71,8 @@ class WindowsRoom(roomNumber: Int,
     }
 }
 
-class MacRoom(roomNumber: Int,
-              building: Building,
-              timeSlots: List<String>,
-              daysOfTheWeek: List<String>) : Room(roomNumber, building, timeSlots, daysOfTheWeek) {
+class MacRoom(roomNumber: Int, building: Building, timeSlots: List<String>, daysOfTheWeek: List<String>, numOfComputer: Int)
+    : Room(roomNumber, building, timeSlots, daysOfTheWeek, numOfComputer) {
     /**
      * Room with MAC Operating systems on the Computers
      */
@@ -88,10 +81,8 @@ class MacRoom(roomNumber: Int,
     }
 }
 
-class LinuxRoom(roomNumber: Int,
-                building: Building,
-                timeSlots: List<String>,
-                daysOfTheWeek: List<String>) : Room(roomNumber, building, timeSlots, daysOfTheWeek) {
+class LinuxRoom(roomNumber: Int, building: Building, timeSlots: List<String>, daysOfTheWeek: List<String>, numOfComputer: Int)
+    : Room(roomNumber, building, timeSlots, daysOfTheWeek, numOfComputer) {
     /**
      * Room with Linux Operating systems on the Computers
      */

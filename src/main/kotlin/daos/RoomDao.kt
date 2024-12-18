@@ -38,19 +38,23 @@ class ExposedRoomDao : RoomsDao {
                             "Windows" -> building.createWindowsRoom(
                                 row[Rooms.roomNumber],
                                 timeSlots,
-                                weekDays
+                                weekDays,
+                                row[Rooms.numOfComputers]
+
                             )
 
                             "Mac" -> building.createMacRoom(
                                 row[Rooms.roomNumber],
                                 timeSlots,
-                                weekDays
+                                weekDays,
+                                row[Rooms.numOfComputers]
                             )
 
                             "Linux" -> building.createLinuxRoom(
                                 row[Rooms.roomNumber],
                                 timeSlots,
-                                weekDays
+                                weekDays,
+                                row[Rooms.numOfComputers]
                             )
 
                             else -> {

@@ -93,6 +93,6 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
     }
 
     override fun toString() : String {
-        return "Global ID: $globalId"
+        return globalId
     }
 }

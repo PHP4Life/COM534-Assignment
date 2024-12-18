@@ -30,7 +30,6 @@ data class SearchForRoomView(val user: User, val university: University, val boo
         val selectedSystem = remember { mutableStateOf("") }
         MaterialTheme {
             Column(Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
-                Row() { }
                 Row() { Text("Search for Rooms") }
                 Row() { Text("Select a building: ") }
                 Row() {
@@ -84,7 +83,7 @@ data class SearchForRoomView(val user: User, val university: University, val boo
                         val building = university.findBuildingByName(selectedBuilding.value)
                         val rooms = building?.getRooms()?.filter { it.getOperatingSystem() == selectedSystem.value }
                         if (rooms != null) {
-                            navigator.push(RoomView(rooms, bookRoom))
+                            navigator.push(RoomView(user, rooms, bookRoom))
                             println("This is the room you have filter")
                         }
                         else { print("no rooms found") }
