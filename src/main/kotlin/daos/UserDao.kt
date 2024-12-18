@@ -17,19 +17,6 @@ object Users : Table("users") {
     val userType = text("userType")
 
 }
-//
-//class UserDao {
-//    fun insertUser(user: User) {
-//        Users.insert {
-//            it[name] = user.name
-//            it[password] = user.password
-//            it[email] = user.email
-//            it[userType] = user.getUserType()
-//        }
-//    }
-//
-//    fun selectUsers() {}
-//}
 
 interface UserDao {
     fun insertUser(user: User) : Boolean
@@ -47,7 +34,6 @@ class ExposedUserDao : UserDao {
                 it[userType] = user.getUserType()
             }[Users.id]
         }
-//        Users.id = userId // set the provided Song's ID to the ID returned from the INSERT
         return userId != null
     }
 

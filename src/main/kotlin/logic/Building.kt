@@ -5,6 +5,9 @@
 
 package logic
 
+import daos.ExposedRoomDao
+
+
 class Building(val name: String, val code: String, private val university: University) {
     /**
      * Building object to store the rooms of the building
@@ -12,7 +15,8 @@ class Building(val name: String, val code: String, private val university: Unive
     private var rooms = mutableListOf<Room>()
 
     fun getRooms() : List<Room> {
-        return rooms
+        val roomsFromDB = ExposedRoomDao().getRoomsFromDB(name, university)
+        return roomsFromDB
     }
 
     private fun addRoom(room: Room) {
@@ -86,6 +90,6 @@ class Building(val name: String, val code: String, private val university: Unive
     }
 
     override fun toString(): String {
-        return "Building: $name University Name: ${university.name} Building Code: $code Rooms: $rooms"
+        return name
     }
 }

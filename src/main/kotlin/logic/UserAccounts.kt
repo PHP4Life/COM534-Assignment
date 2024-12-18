@@ -17,6 +17,7 @@ class UserAccounts {
     fun getUsers(): List<User> {
         val usersFromDB = ExposedUserDao().getUsersFromDB()
         for (userDB in usersFromDB) {users.add(userDB)}
+        print(usersFromDB)
         return usersFromDB
     }
 

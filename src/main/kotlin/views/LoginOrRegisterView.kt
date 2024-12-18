@@ -89,10 +89,11 @@ data class LoginOrRegisterViewForm(val register: Boolean) : Screen {
                                     }
 
                             } else if (!register && validateInput(name.value, password.value, email.value, register)){
-                                val loggedIn = UserAccounts().getUsers().find {it.name == name.value}
+                                val loggedIn = UserAccounts().getUsers().find {it.name == name.value && it.password == password.value}
                                 if (loggedIn != null) {
                                     navigator.push(MainMenuView(loggedIn))
                                 }
+                                else {showErrorDialog = true}
                             }
                             else {showErrorDialog = true}
                         }
@@ -116,11 +117,12 @@ data class LoginOrRegisterViewForm(val register: Boolean) : Screen {
         }
 
     }
+    private fun validateInput(name: String, password: String, email: String, register: Boolean): Boolean {
+        return name.isNotBlank() && password.isNotBlank() && (!register || email.isNotBlank())
+    }
 }
 
 
-fun validateInput(name: String, password: String, email: String, register: Boolean): Boolean {
-    return name.isNotBlank() && password.isNotBlank() && (!register || email.isNotBlank())
-}
+
 
 // https://developer.android.com/topic/libraries/architecture/livedata
