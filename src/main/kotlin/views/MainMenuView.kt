@@ -19,19 +19,19 @@ import logic.User
 
 
 data class MainMenuView(val user: User) : Screen {
-    val solent = University("solent")
-    val spark = solent.createBuilding("The Spark", "TS")
-    val collins = solent.createBuilding("Herbert Collins", "HS")
 
     @Composable
     override fun Content() {
+        val solent = University("solent")
+        val spark = solent.createBuilding("The Spark", "TS")
+        val collins = solent.createBuilding("Herbert Collins", "HC")
         val navigator = LocalNavigator.currentOrThrow
+
         MaterialTheme {
             Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
                 Row() {Button(onClick = {navigator.push(SearchForRoomView(user, solent, false))}) { Text("Search For Rooms By OS and Building") }}
                 Row() {Button(onClick = {navigator.push(SearchForRoomView(user, solent, true))}) { Text("Book A Computer") }}
-                Row() {Button(onClick = {}) { Text("View Booking") }}
-                Row() {Button(onClick = {}) { Text("Cancel Booking") }}
+                Row() {Button(onClick = {navigator.push(ViewAndCancelBookings(user))}) { Text("View & Cancel Bookings") }}
                 if (user.getUserType() == "Admin") {
                     Row() {Button(onClick = {}) { Text("View Bookings for specific time of day") }}
                     Row() {Button(onClick = {}) { Text("Add a new room")}}

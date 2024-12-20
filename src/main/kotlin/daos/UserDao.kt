@@ -24,6 +24,7 @@ interface UserDao {
 }
 
 class ExposedUserDao : UserDao {
+
     override fun insertUser(user: User): Boolean {
         var userId: Int? = null
         transaction {

@@ -20,6 +20,7 @@ interface RoomsDao {
 }
 
 class ExposedRoomDao : RoomsDao {
+
     override fun insertRoom(room: Room): Boolean {
         TODO("Not yet implemented")
     }

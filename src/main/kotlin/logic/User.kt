@@ -12,19 +12,33 @@
 
 package logic
 
+import daos.ExposedBookingDao
+
 abstract class User(var name: String,  var password: String, var email: String, var loggedIn: Boolean = false) {
     // Attributes: name, email & password.
     // Abstract class User, provide a foundation for the
     // subclasses (admin & regular) to based off of
+
+    //TODO: I was unable to successfully implement this in the booking class, as it meant having to initial rooms and computers for each booking
+    fun getUserBookings() : List<ComputerBooking> {
+        return ExposedBookingDao().getBookingsByUserFromDB(name)
+    }
+
+    fun deleteUserBooking(booking: ComputerBooking) : Boolean {
+        if (ExposedBookingDao().userDeleteBookingFromDB(booking)) {
+            return true
+        } else {return false}
+    }
     abstract fun getUserType(): String
 }
 
 class RegularUser(name: String, password: String, email: String, loggedIn: Boolean = false) : User(name, password, email, loggedIn) {
     // Regular Subclass of User.
-    // Provides limited functionality with the interface, only allowed to create user
+    // Provides the ability to search for rooms, create bookings, view them and cancel them
     override fun getUserType(): String {
         // Responsible for identifying the user type
         // Return a string of the user type
+        // TODO: Changed this to return this what user type this is
         return "Regular"
     }
 }
@@ -36,8 +50,7 @@ class AdminUser(name: String, password: String, email: String, loggedIn: Boolean
     override fun getUserType(): String {
         // Responsible for identifying the user type
         // Return a string of the user type
-
-        // Change this to return this what user type this is
+        // TODO: Changed this to return this what user type this is
         return "Admin"
     }
 }

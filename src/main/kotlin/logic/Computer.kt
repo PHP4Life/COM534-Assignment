@@ -4,11 +4,14 @@
 
 package logic
 
+import daos.ExposedBookingDao
+
 data class ComputerBooking(
     val computerId: String,
     val day: String,
     val timeSlot: String,
-    val student: User
+    val student: String
+    // Changed student to of type string
 )
 
 class Computer(val computerNumber: Int, val computerRoom: Room,
@@ -30,16 +33,8 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         /**
          * Add a booking to the Computer. Make sure that there is not already a booking for that computer.
          */
-        return if (bookings.none {
-                it.computerId == booking.computerId &&
-                        it.day == booking.day &&
-                        it.timeSlot == booking.timeSlot
-            }) {
-            bookings.add(booking)
-            true
-        } else {
-            false
-        }
+        // Change this function for addition checking and simplified short circuit evaluation,
+        return bookings.none { it.computerId == booking.computerId && it.day == booking.day && it.timeSlot == booking.timeSlot } && ExposedBookingDao().insertBooking(booking)
     }
 
     fun deleteBooking(booking: ComputerBooking): Boolean {
@@ -59,6 +54,9 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
     }
 
     fun getBookings() : MutableSet<ComputerBooking> {
+        val bookingsFromDB = ExposedBookingDao().getBookingsFromDB(globalId)
+        for (computerBooking in bookingsFromDB) {
+            bookings.add(computerBooking)}
         return bookings
     }
 

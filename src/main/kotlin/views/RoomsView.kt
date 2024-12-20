@@ -25,6 +25,7 @@ data class RoomView(val user: User, val rooms: List<Room>, val bookComputer: Boo
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val selectedRoom = remember { mutableStateOf<Room?>(null) }
+
         MaterialTheme {
             Column() {
                 if (rooms.isNotEmpty()) {

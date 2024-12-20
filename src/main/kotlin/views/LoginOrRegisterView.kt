@@ -46,7 +46,7 @@ data class LoginOrRegisterViewForm(val register: Boolean) : Screen {
         val name = remember { mutableStateOf("") }
         val password = remember { mutableStateOf("") }
         val email = remember { mutableStateOf("") }
-        var showErrorDialog by remember { mutableStateOf(false) }
+        var showDialog by remember { mutableStateOf(false) }
         val navigator = LocalNavigator.currentOrThrow
 
         MaterialTheme {
@@ -93,19 +93,19 @@ data class LoginOrRegisterViewForm(val register: Boolean) : Screen {
                                 if (loggedIn != null) {
                                     navigator.push(MainMenuView(loggedIn))
                                 }
-                                else {showErrorDialog = true}
+                                else {showDialog = true}
                             }
-                            else {showErrorDialog = true}
+                            else {showDialog = true}
                         }
                     ) { Text("Proceed") }
-                    if (showErrorDialog) {
+                    if (showDialog) {
                         AlertDialog(
-                            onDismissRequest = { showErrorDialog = false },
+                            onDismissRequest = { showDialog = false },
                             title = { Text("Error") },
                             text = { Text("Please check your input and try again.") },
                             buttons = {
                                 Button(
-                                    onClick = { showErrorDialog = false }
+                                    onClick = { showDialog = false }
                                 ) {
                                     Text("OK")
                                 }
