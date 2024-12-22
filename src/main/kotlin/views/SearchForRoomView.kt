@@ -20,12 +20,12 @@ data class SearchForRoomView(val user: User, val university: University, val boo
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val expandBuilding = remember { mutableStateOf(false) }
-        val expandOS = remember { mutableStateOf(false) }
 
         val buildings = university.getBuildings()
         val selectedBuilding = remember { mutableStateOf("") }
 
-        // This is a limitation as if there is another OS to be added i.e. OpenBSD, this has to be programmatically added
+        val expandOS = remember { mutableStateOf(false) }
+        // TODO: This is a limitation as if there is another OS to be added i.e. OpenBSD, this has to be programmatically added. If were to redo this
         val operatingSystems = listOf("Windows", "Mac", "Linux")
         val selectedSystem = remember { mutableStateOf("") }
         MaterialTheme {
@@ -80,13 +80,16 @@ data class SearchForRoomView(val user: User, val university: University, val boo
                 }
                 Row() {
                     Column() {Button(onClick = {
+                        //TODO: Allows you to look at all the rooms in the building or filter all the rooms in the building by OS
                         val building = university.findBuildingByName(selectedBuilding.value)
-                        val rooms = building?.getRooms()?.filter { it.getOperatingSystem() == selectedSystem.value }
-                        if (rooms != null) {
-                            navigator.push(RoomView(user, rooms, bookRoom))
-                            println("This is the room you have filter")
+                        val rooms = building?.getRooms()
+                        val roomsOS = rooms?.filter {it.getOperatingSystem() == selectedSystem.value}
+                        if (roomsOS != null && selectedSystem.value.isNotEmpty()) {
+                            navigator.push(RoomView(user, roomsOS, bookRoom))
                         }
-                        else { print("no rooms found") }
+                        else if(rooms != null) {
+                            navigator.push(RoomView(user, rooms, bookRoom))
+                        }
                    },
                         Modifier.padding(horizontal = 2.dp))  { Text("Search Rooms") }}
                 }

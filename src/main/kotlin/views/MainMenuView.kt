@@ -15,7 +15,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import logic.University
 import logic.User
-
+import views.adminViews.AddNewRoomView
+import views.adminViews.ChangeRoomOSTypeView
+import views.adminViews.SearchDailyBookingsView
 
 
 data class MainMenuView(val user: User) : Screen {
@@ -31,13 +33,13 @@ data class MainMenuView(val user: User) : Screen {
             Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
                 Row() {Button(onClick = {navigator.push(SearchForRoomView(user, solent, false))}) { Text("Search For Rooms By OS and Building") }}
                 Row() {Button(onClick = {navigator.push(SearchForRoomView(user, solent, true))}) { Text("Book A Computer") }}
-                Row() {Button(onClick = {navigator.push(ViewAndCancelBookings(user))}) { Text("View & Cancel Bookings") }}
+                Row() {Button(onClick = {navigator.push(ViewAndCancelBookingsView(user))}) { Text("View & Cancel Bookings") }}
                 if (user.getUserType() == "Admin") {
-                    Row() {Button(onClick = {}) { Text("View Bookings for specific time of day") }}
-                    Row() {Button(onClick = {}) { Text("Add a new room")}}
-                    Row() {Button(onClick = {}) { Text("Change Room System Type")}}
+                    Row() {Button(onClick = {navigator.push(SearchDailyBookingsView(solent))}) { Text("View Room Bookings for specific time of day") }}
+                    Row() {Button(onClick = {navigator.push(AddNewRoomView(solent))}) { Text("Add a new room")}}
+                    Row() {Button(onClick = {navigator.push(ChangeRoomOSTypeView(solent))}) { Text("Change Room System Type")}}
                 }
-                Row() {Button(onClick = {}) { Text("View Booked Computers by room")}}
+                Row() {Button(onClick = {navigator.push(ComputerBookingsSearchView(user, solent))}) { Text("Graphically View Booked Computers by room")}}
             }
             Column { Button(onClick = {navigator.popUntilRoot()}) {Text("Log Out")} }
         }

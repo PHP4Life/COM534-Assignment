@@ -2,8 +2,10 @@ package daos
 
 import logic.*
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 object Rooms : Table("rooms") {
     val roomNumber = integer("roomNumber")
@@ -15,14 +17,29 @@ object Rooms : Table("rooms") {
 }
 
 interface RoomsDao {
-    fun insertRoom(room: Room) : Boolean
+    fun insertRoom(room: Room, buildingName: String) : Boolean
     fun getRoomsFromDB(buildingName: String, university: University) : List<Room>
+    fun updateRoomType(roomNumber: Int, updatedOSType: String) : Boolean
 }
 
 class ExposedRoomDao : RoomsDao {
 
-    override fun insertRoom(room: Room): Boolean {
-        TODO("Not yet implemented")
+    override fun insertRoom(room: Room, buildingName: String): Boolean {
+        return try {
+            transaction {
+                Rooms.insert {
+                    it[roomNumber] = room.roomNumber
+                    it[building] = buildingName
+                    it[operatingSystem] = room.getOperatingSystem()
+                    it[timeSlots] = room.timeSlots.joinToString(",")
+                    it[daysOfWeek] = room.daysOfTheWeek.joinToString(",")
+                    it[numOfComputers] = room.numOfComputer
+                }
+                true
+            }
+        } catch (e: Exception) {
+            false
+        }
     }
 
     override fun getRoomsFromDB(buildingName: String, university: University): List<Room> {
@@ -72,5 +89,16 @@ class ExposedRoomDao : RoomsDao {
             }
         }
         return rooms
+    }
+
+    override fun updateRoomType(roomNumber: Int, updatedOSType: String) : Boolean {
+        return try {
+            transaction {
+                Rooms.update({ Rooms.roomNumber eq roomNumber }) {
+                    it[operatingSystem] = updatedOSType
+                }
+            }
+            true
+        } catch (e: Exception) { false }
     }
 }

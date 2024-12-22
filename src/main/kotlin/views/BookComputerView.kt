@@ -13,7 +13,7 @@ import logic.ComputerBooking
 import logic.Room
 import logic.User
 
-data class BookComputer(val user: User, val room: Room) : Screen {
+data class BookComputerView(val user: User, val room: Room) : Screen {
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
@@ -63,7 +63,7 @@ data class BookComputer(val user: User, val room: Room) : Screen {
                 Row() { Text("Select a day: ") }
                 Row() {
                     LaunchedEffect(selectedComputerObject) {
-                        selectedDay.value = "Please Pick a Computer First" // Reset selectedTime to null
+                        selectedDay.value = "Please Pick a Computer First"
                     }
                     ExposedDropdownMenuBox(expanded = expandDay.value, onExpandedChange = {
                         expandDay.value = !expandDay.value
@@ -87,7 +87,7 @@ data class BookComputer(val user: User, val room: Room) : Screen {
                                         ) { Text(day) }
                                     }
                                 }
-                                else { DropdownMenuItem(onClick = {}) { Text("No time slots available") }}
+                                else { DropdownMenuItem(onClick = {}) { Text("Not available for any days") }}
                             }
                         }
                     }

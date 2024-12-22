@@ -20,6 +20,7 @@ abstract class Room(
     }
 
     fun addComputers(numOfComputersToAdd: Int) {
+        // TODO: Rewrote this to create computers based on how many computers
         repeat(numOfComputersToAdd) {
             computers.add(Computer(it + 1, this, this.timeSlots, this.daysOfTheWeek));
         }
@@ -43,6 +44,18 @@ abstract class Room(
         for (computer in computers) {
             for (booking in computer.getBookings()) {
                 if (booking.day == day) {
+                    bookings.add(booking)
+                }
+            }
+        }
+        return bookings
+    }
+
+    fun getBookingsByDayTime(day: String, time: String): MutableList<ComputerBooking> {
+        val bookings = mutableListOf<ComputerBooking>()
+        for (computer in computers) {
+            for (booking in computer.getBookings()) {
+                if (booking.day == day && booking.timeSlot == time) {
                     bookings.add(booking)
                 }
             }

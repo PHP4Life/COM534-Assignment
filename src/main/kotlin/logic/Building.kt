@@ -56,27 +56,36 @@ class Building(val name: String, val code: String, private val university: Unive
         return room
     }
 
-    fun updateRoomType(room: Room, newType: String) {
+    fun addRoomToDB(room: Room) : Boolean {
+        val status = ExposedRoomDao().insertRoom(room, name)
+        return status
+    }
+
+    fun updateRoomType(room: Room, newOSType: String) : Boolean {
+        // TODO: Updated function to update the database and add the newly updated object to the building list. Now returns a boolean to the GUI
         /**
          * To update a room type, the room in the rooms list, is replaced with an updated class for the room
          * type, all values and computers are transferred
          */
         val index = rooms.indexOf(room)
-        when (newType) {
+        when (newOSType) {
             "Windows" -> {
-                rooms[index] = WindowsRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
+                val updatedRoom = WindowsRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
+                rooms[index] = updatedRoom
+                return ExposedRoomDao().updateRoomType(room.roomNumber, newOSType)
             }
             "Linux" -> {
-                rooms[index] = LinuxRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
+                val updatedRoom = LinuxRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
+                rooms[index] = updatedRoom
+                return ExposedRoomDao().updateRoomType(room.roomNumber, newOSType)
             }
             "Mac" -> {
-                rooms[index] = MacRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
+                val updatedRoom = MacRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
+                rooms[index] = updatedRoom
+                return ExposedRoomDao().updateRoomType(room.roomNumber, newOSType)
             }
         }
-        // Add computers to the new room type
-        for (computer in room.getComputers()) {
-            rooms[index].addComputer(computer)
-        }
+        return false
     }
 
     fun deleteRoom(room: Room) {
@@ -94,6 +103,8 @@ class Building(val name: String, val code: String, private val university: Unive
     }
 
     fun findRoomByNumber (number: Int) : Room? {
+        // TODO: Changed this to call the get rooms method, which retrieves from the database
+        getRooms()
         return rooms.find { it.roomNumber == number }
     }
 

@@ -19,14 +19,15 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import logic.ComputerBooking
 import logic.User
 
-data class ViewAndCancelBookings(val user: User) : Screen {
+data class ViewAndCancelBookingsView(val user: User) : Screen {
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val userBookings = user.getUserBookings()
+        val showDialog = remember { mutableStateOf(false) }
+
         val selectedBooking = remember { mutableStateOf<ComputerBooking?>(null) }
-        var showDialog by remember { mutableStateOf(false) }
         val selectedBookingComputer = remember { mutableStateOf("") }
         val selectedBookingDay = remember { mutableStateOf("") }
         val selectedBookingTime = remember { mutableStateOf("") }
@@ -48,7 +49,7 @@ data class ViewAndCancelBookings(val user: User) : Screen {
                                         selectedBookingComputer.value = booking.computerId
                                         selectedBookingDay.value = booking.day
                                         selectedBookingTime.value = booking.timeSlot
-                                        showDialog = true
+                                        showDialog.value = true
                                     }
                                 ) {
                                     Column(
@@ -64,8 +65,8 @@ data class ViewAndCancelBookings(val user: User) : Screen {
                             }
                         }
                     } else {
-                        Text("No bookings found under username: ${user.name}")
-                        Text("If you believe you have made a booking, please contact your administrator")
+                        Text("No bookings found under username: ${user.name} ")
+                        if (user.getUserType() != "Admin") {Text("If you believe you have made a booking, please contact your administrator")}
                     }
                 }
             }
@@ -73,9 +74,9 @@ data class ViewAndCancelBookings(val user: User) : Screen {
                 Button(onClick = {navigator.pop()}, Modifier.padding(horizontal = 2.dp)) {
                     Text("Return to Main Menu") }
             }
-            if (showDialog) {
+            if (showDialog.value) {
                 AlertDialog(
-                    onDismissRequest = { showDialog = false },
+                    onDismissRequest = { showDialog.value = false },
                     title = { Text("Cancel Booking?") },
                     text = { Column() {
                         Text("Are you sure you want to cancel: ")
@@ -86,7 +87,7 @@ data class ViewAndCancelBookings(val user: User) : Screen {
                            }},
                     buttons = {
                         Button(
-                            onClick = { showDialog = false },
+                            onClick = { showDialog.value = false },
                             modifier = Modifier.padding(horizontal = 16.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red, contentColor = Color.White)) {
                             Text("No, Do not Cancel") }
@@ -97,7 +98,6 @@ data class ViewAndCancelBookings(val user: User) : Screen {
                                     if (successfulDelete) {
                                         navigator.pop()
                                     }
-
                                 }
                                },
                             modifier = Modifier.padding(horizontal = 16.dp),

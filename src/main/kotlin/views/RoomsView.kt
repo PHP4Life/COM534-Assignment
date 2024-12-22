@@ -38,7 +38,7 @@ data class RoomView(val user: User, val rooms: List<Room>, val bookComputer: Boo
                                     .clickable {},
                                 onClick = {
                                     selectedRoom.value = room
-                                    if (bookComputer && selectedRoom.value != null) {navigator.push(BookComputer(user, room))}
+                                    if (bookComputer && selectedRoom.value != null) {navigator.push(BookComputerView(user, room))}
                                 }
                             ) {
                                 Column(

@@ -33,7 +33,7 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         /**
          * Add a booking to the Computer. Make sure that there is not already a booking for that computer.
          */
-        // Change this function for addition checking and simplified short circuit evaluation,
+        //TODO:  Change this function for addition checking and simplified short circuit evaluation,
         return bookings.none { it.computerId == booking.computerId && it.day == booking.day && it.timeSlot == booking.timeSlot } && ExposedBookingDao().insertBooking(booking)
     }
 
@@ -41,6 +41,8 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         /**
          * Delete a Computer booking. Make sure that the booking exists before trying to delete it.
          */
+
+        // TODO: This is no longer need as deleting bookings is managed by the user and its classes and objects are disposed of and created dynamically
         return if (bookings.none {
                 it.computerId == booking.computerId &&
                         it.day == booking.day &&
@@ -48,7 +50,7 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
             }) {
             false
         } else {
-            bookings.remove(booking)
+            ExposedBookingDao().userDeleteBookingFromDB(booking)
             true
         }
     }
@@ -58,6 +60,17 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         for (computerBooking in bookingsFromDB) {
             bookings.add(computerBooking)}
         return bookings
+    }
+
+    fun getComputerBookingByDateTime(day: String, timeSlot: String) : List<ComputerBooking?> {
+        return bookings.filter{it.day == day && it.timeSlot == timeSlot && it.computerId == globalId}
+    }
+
+    fun isComputerBooked(day: String, timeSlot: String): Boolean {
+        /**
+         * Checks if a specific time and day is booked for the computer.
+         */
+        return bookings.any { it.day == day && it.timeSlot == timeSlot }
     }
 
     private fun isDateTimeBooked(day: String, timeSlot: String, computerId: String): Boolean {

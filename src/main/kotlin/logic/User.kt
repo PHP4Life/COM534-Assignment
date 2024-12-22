@@ -19,11 +19,12 @@ abstract class User(var name: String,  var password: String, var email: String, 
     // Abstract class User, provide a foundation for the
     // subclasses (admin & regular) to based off of
 
-    //TODO: I was unable to successfully implement this in the booking class, as it meant having to initial rooms and computers for each booking
+    //TODO: I was unable to successfully implement this in the booking class, as it meant having to initialise rooms and computers for each booking
     fun getUserBookings() : List<ComputerBooking> {
         return ExposedBookingDao().getBookingsByUserFromDB(name)
     }
 
+    //TODO: I was unable to successfully implement this in the booking class, as it meant having to initialise rooms and computers for each booking
     fun deleteUserBooking(booking: ComputerBooking) : Boolean {
         if (ExposedBookingDao().userDeleteBookingFromDB(booking)) {
             return true
