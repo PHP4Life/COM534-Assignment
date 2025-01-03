@@ -1,3 +1,8 @@
+//////////////////// ViewAndCancelBookingsView.kt ////////////////////////////////
+///////////////////////// Author: Edward Kirr ///////////////////////////////////
+//// Description: Displays the bookings made by the logged-in user /////////////
+// the user can then choose to cancel the booking, making it available again //
+
 package views
 
 import androidx.compose.foundation.clickable
@@ -20,6 +25,8 @@ import logic.ComputerBooking
 import logic.User
 
 data class ViewAndCancelBookingsView(val user: User) : Screen {
+    // Parameters:
+    // User - this is the logged-in user
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {

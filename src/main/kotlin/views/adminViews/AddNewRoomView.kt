@@ -1,3 +1,10 @@
+//////////////////// AddNewRoomView.kt //////////////////////////////////
+/////////////////// Author: Edward Kirr ////////////////////////////////
+////// Description: Prompts the user to select the building, //////////
+//// enter a room number, OS type and number of computers ////////////
+/// they are then navigated to the screen to add days and slots /////
+
+
 package views.adminViews
 
 import androidx.compose.foundation.layout.*
@@ -18,10 +25,10 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import logic.Building
 
 import logic.University
-import views.MainMenuView
 
 data class AddNewRoomView(val university: University) : Screen {
-
+    // Parameters:
+    // University - This acts as the main entry point, to access the buildings and its about classes
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {

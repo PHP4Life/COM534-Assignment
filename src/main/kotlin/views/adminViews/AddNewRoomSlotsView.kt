@@ -1,4 +1,14 @@
+//////////////////// AddNewRoomSlotsView.kt //////////////////////////////
+/////////////////// Author: Edward Kirr /////////////////////////////////
+/// Description: Prompts the user to add days and time slots through////
+// the use of filter chips, then the room is added to the database ////
+
+
 package views.adminViews
+
+import logic.Building
+import logic.Room
+import views.MainMenuView
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -14,13 +24,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 
-import logic.Building
-import logic.Room
-import views.MainMenuView
-
-
 data class AddNewRoomSlotsView(val building: Building, val roomNum: Int, val os: String, val numOfComputers: Int) : Screen {
-
+    // Parameters:
+    // Building - this is selected building from the previous screen
+    // Int - this is room number of new room
+    // String - this is the operating system type of the new room - This can be either windows, linux or macOS
+    // Int - this is the number of computers - this can only be in multiples of 5
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {

@@ -1,4 +1,13 @@
+//////////////////// SearchDailyBookingsView.kt //////////////////////////////////
+///////////////////////// Author: Edward Kirr ///////////////////////////////////
+/////////// Description: Allows the user to pick a building, room and day //////
+/////// which returns a list of bookings made. Only admin accessible  /////////
+
 package views.adminViews
+
+import logic.Building
+import logic.Room
+import logic.University
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -14,12 +23,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 
-import logic.Building
-import logic.Room
-import logic.University
-
 data class SearchDailyBookingsView(val university: University) : Screen {
-
+    // Parameters:
+    // University - takes in a university object to get the buildings and its room
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {

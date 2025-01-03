@@ -1,3 +1,7 @@
+////////////////////////////// UserDao.kt //////////////////////////////////
+///////////////////////// Author: Edward Kirr ////////////////////////////////
+//// Description: data access object to interact with the User table /////
+
 package daos
 import daos.Users.password
 import logic.AdminUser
@@ -8,7 +12,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
-//
+// Initialises the table with its required columns
 object Users : Table("users") {
     val id = integer("id").autoIncrement()
     val name = text("name")
@@ -16,16 +20,21 @@ object Users : Table("users") {
     val email = text("email")
     val userType = text("userType")
 
+    override val primaryKey = PrimaryKey(id)
 }
 
 interface UserDao {
+    // Creates the methods to be exposed by object interfacing with this interface
     fun insertUser(user: User) : Boolean
     fun getUsersFromDB() : List<User>
 }
 
-class ExposedUserDao : UserDao {
+    class ExposedUserDao : UserDao {
 
     override fun insertUser(user: User): Boolean {
+        // Parameters:
+        // User - this is the user object, that is being created when the user tries to register
+        // Returns: A bool value based on whether it was successful or not
         var userId: Int? = null
         transaction {
             userId = Users.insert {
@@ -39,6 +48,7 @@ class ExposedUserDao : UserDao {
     }
 
     override fun getUsersFromDB(): List<User> {
+        // Returns: the list of users that are a part the user accounts
         val users = mutableListOf<User>()
         transaction {
             Users.selectAll().forEach {

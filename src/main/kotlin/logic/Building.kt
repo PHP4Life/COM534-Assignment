@@ -1,25 +1,29 @@
-/**
- * @author  William Bladon-Whittam
- * @author  Edward Kirr
- */
+////////////////////////// Building.kt ////////////////////////////////////
+///////////////////////// Author: Edward Kirr ////////////////////////////
+//// Originally made by Edward Kirr and William Bladon-Whittam for AE1 //
+/// Responsible for storing rooms and handling operators of the rooms //
+/////////////// and its subclasses ////////////////////////////////////
 
 package logic
 
 import daos.ExposedRoomDao
+import daos.RoomDao
 
 
-class Building(val name: String, val code: String, private val university: University) {
+class Building(val name: String, val code: String, private val university: University, private val roomDao: RoomDao = ExposedRoomDao()) {
     /**
      * Building object to store the rooms of the building
      */
     private var rooms = mutableListOf<Room>()
 
     fun getRooms() : List<Room> {
-        val roomsFromDB = ExposedRoomDao().getRoomsFromDB(name, university)
+        // Gets the rooms from the database through the data access object
+        val roomsFromDB = roomDao.getRoomsFromDB(name, university)
         return roomsFromDB
     }
 
     private fun addRoom(room: Room) {
+        // Adds a room the class' mutable list
         rooms.add(room)
     }
 
@@ -57,7 +61,9 @@ class Building(val name: String, val code: String, private val university: Unive
     }
 
     fun addRoomToDB(room: Room) : Boolean {
-        val status = ExposedRoomDao().insertRoom(room, name)
+        // Parameter:
+        // Room - takes a room object and sends it to the room dao to get inserted
+        val status = roomDao.insertRoom(room, name)
         return status
     }
 
@@ -72,35 +78,35 @@ class Building(val name: String, val code: String, private val university: Unive
             "Windows" -> {
                 val updatedRoom = WindowsRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
                 rooms[index] = updatedRoom
-                return ExposedRoomDao().updateRoomType(room.roomNumber, newOSType)
+                return roomDao.updateRoomType(room.roomNumber, newOSType)
             }
             "Linux" -> {
                 val updatedRoom = LinuxRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
                 rooms[index] = updatedRoom
-                return ExposedRoomDao().updateRoomType(room.roomNumber, newOSType)
+                return roomDao.updateRoomType(room.roomNumber, newOSType)
             }
             "Mac" -> {
                 val updatedRoom = MacRoom(room.roomNumber, room.building, room.timeSlots, room.daysOfTheWeek, room.numOfComputer)
                 rooms[index] = updatedRoom
-                return ExposedRoomDao().updateRoomType(room.roomNumber, newOSType)
+                return roomDao.updateRoomType(room.roomNumber, newOSType)
             }
         }
         return false
     }
 
-    fun deleteRoom(room: Room) {
-        rooms.remove(room)
-    }
-
-    fun findRoomByOS (searchOS: String) : List<Room> {
-        val roomsFound = mutableListOf<Room>()
-        for (currentRoom in rooms) {
-            if(currentRoom.getOperatingSystem() == searchOS) {
-                roomsFound.add(currentRoom)
-            }
-        }
-        return roomsFound
-    }
+//    fun deleteRoom(room: Room) {
+//        rooms.remove(room)
+//    }
+//
+//    fun findRoomByOS (searchOS: String) : List<Room> {
+//        val roomsFound = mutableListOf<Room>()
+//        for (currentRoom in rooms) {
+//            if(currentRoom.getOperatingSystem() == searchOS) {
+//                roomsFound.add(currentRoom)
+//            }
+//        }
+//        return roomsFound
+//    }
 
     fun findRoomByNumber (number: Int) : Room? {
         // TODO: Changed this to call the get rooms method, which retrieves from the database

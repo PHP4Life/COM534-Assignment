@@ -1,3 +1,8 @@
+//////////////////// SummaryDailyBookingsView.kt //////////////////////////////////
+///////////////////////// Author: Edward Kirr ///////////////////////////////////
+////// Description: Displays the bookings for that building, room and day //////
+
+
 package views.adminViews
 
 import androidx.compose.foundation.clickable
@@ -18,6 +23,8 @@ import logic.ComputerBooking
 
 
 data class SummaryDailyBookingsView(val bookings: MutableList<ComputerBooking>?) : Screen {
+    // Parameters:
+    // MutableList<ComputerBooking> - If there are any bookings made, it will contain a list of computer booking data object
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable

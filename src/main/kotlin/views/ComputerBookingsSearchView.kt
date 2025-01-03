@@ -1,3 +1,11 @@
+/////////////////////// ComputerBookingSearchView.kt ////////////////
+///////////////////////// Author: Edward Kirr //////////////////////
+//// Description: Provides dropdowns for the user to select ///////
+/////// a building and a room, provides filter chips /////////////
+/////// to filter by a specific time and day ////////////////////
+/////// User is then navigated to the graphical grid ///////////
+
+
 package views
 
 import androidx.compose.foundation.horizontalScroll
@@ -42,7 +50,7 @@ data class ComputerBookingsSearchView(val user: User, val university: University
         val selectedTime = remember { mutableStateOf("Please Pick a Day First") }
 
         MaterialTheme {
-            Column() {
+            Column(Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
                 Row() { Text("Graphically View Booked Computers", fontWeight = FontWeight.Bold) }
                 Row() { Text("Select a building: ") }
                 Row() {

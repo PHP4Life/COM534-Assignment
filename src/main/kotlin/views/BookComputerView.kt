@@ -1,3 +1,7 @@
+////////////////////////// BookComputerView.kt ///////////////////////////////////////
+///////////////////////// Author: Edward Kirr ///////////////////////////////////////
+//// Description: Prompts the user to pick a computer, day and time from the ///////
+// available slots, then creates a booking and inserts it into the database ///////
 package views
 
 import androidx.compose.foundation.layout.*
@@ -14,6 +18,9 @@ import logic.Room
 import logic.User
 
 data class BookComputerView(val user: User, val room: Room) : Screen {
+    // Parameters:
+    // User - this is the logged-in user
+    // Room - the selected room object from the previous screen
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
@@ -40,7 +47,10 @@ data class BookComputerView(val user: User, val room: Room) : Screen {
                     ExposedDropdownMenuBox(expanded = expandComputer.value, onExpandedChange = {
                         expandComputer.value = !expandComputer.value
                     }) {
-                        TextField(value = selectedComputerString.value, onValueChange = {}, readOnly = true, trailingIcon = {
+                        TextField(value = selectedComputerString.value, onValueChange = {
+                            selectedDay.value = "Please Pick a Computer First"
+                            selectedTime.value = "Please Pick a Day First"},
+                            readOnly = true, trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandComputer.value)
                         })
                         ExposedDropdownMenu(expanded = expandComputer.value,
@@ -62,13 +72,29 @@ data class BookComputerView(val user: User, val room: Room) : Screen {
                 }
                 Row() { Text("Select a day: ") }
                 Row() {
-                    LaunchedEffect(selectedComputerObject) {
-                        selectedDay.value = "Please Pick a Computer First"
+                    LaunchedEffect(selectedComputerObject, selectedDay.value) {
+                        if (selectedComputerObject != null) {
+                            val availableBookings = selectedComputerObject.getAvailableBookingDates()
+                            if (availableBookings.containsKey(selectedDay.value)) {
+                                val availableTimes = availableBookings[selectedDay.value]
+                                selectedTime.value = availableTimes?.firstOrNull() ?: "Not available for this day"
+                            } else {
+                                selectedTime.value = "Not available for this day"
+                            }
+
+                        } else {
+                            selectedTime.value = "Please Pick a Computer First"
+                            selectedDay.value = "Please Pick a Computer First"
+                        }
                     }
                     ExposedDropdownMenuBox(expanded = expandDay.value, onExpandedChange = {
                         expandDay.value = !expandDay.value
                     }) {
-                        TextField(value = selectedDay.value, onValueChange = {}, readOnly = true, trailingIcon = {
+                        TextField(value = selectedDay.value, onValueChange = {
+                            selectedComputerString.value = ""
+                            selectedTime.value = "Please Pick a Day First"
+                        },
+                            readOnly = true, trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandDay.value)
                         })
                         ExposedDropdownMenu(expanded = expandDay.value,

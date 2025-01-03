@@ -1,4 +1,15 @@
+//////////////////// ChangeRoomOSTypeView.kt /////////////////////////////
+/////////////////// Author: Edward Kirr /////////////////////////////////
+// Description: Prompts the user to select a building and room inside //
+/// the building, to change the operating system to a different one ///
+////////////////// via the list provided /////////////////////////////
+
+
 package views.adminViews
+
+import logic.Building
+import logic.Room
+import logic.University
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -12,10 +23,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-
-import logic.Building
-import logic.Room
-import logic.University
 
 data class ChangeRoomOSTypeView(val university: University) : Screen {
 
@@ -66,6 +73,12 @@ data class ChangeRoomOSTypeView(val university: University) : Screen {
                 }
                 Row() { Text("Select a Room: ") }
                 Row() {
+                    LaunchedEffect(selectedBuilding.value) {
+                        if (selectedBuilding.value != null) {
+                            selectedRoom.value = selectedBuilding.value?.getRooms()?.firstOrNull()
+                        }
+                        else {selectedRoom.value = null}
+                    }
                     ExposedDropdownMenuBox(expanded = expandRoom.value, onExpandedChange = {
                         expandRoom.value = !expandRoom.value
                     }) {

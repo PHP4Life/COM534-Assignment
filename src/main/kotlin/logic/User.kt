@@ -9,31 +9,37 @@
  * This is to track what user is logged in, as if a user is logged in they should not be able to delete their own
  * account.
  */
+// LoggedIn bool is now no longer needed as the state is managed by the GUI
 
 package logic
 
+import daos.BookingDao
 import daos.ExposedBookingDao
 
-abstract class User(var name: String,  var password: String, var email: String, var loggedIn: Boolean = false) {
+abstract class User(var name: String,  var password: String, var email: String) {
     // Attributes: name, email & password.
     // Abstract class User, provide a foundation for the
     // subclasses (admin & regular) to based off of
+    private val bookingsDao: BookingDao = ExposedBookingDao()
 
     //TODO: I was unable to successfully implement this in the booking class, as it meant having to initialise rooms and computers for each booking
     fun getUserBookings() : List<ComputerBooking> {
-        return ExposedBookingDao().getBookingsByUserFromDB(name)
+        //Returns: A list of computer bookings made that contain the user's name
+        // Interacts with the Bookings DAO to get bookings, which are filtered by the username
+        return  bookingsDao.getBookingsByUserFromDB(name)
     }
 
     //TODO: I was unable to successfully implement this in the booking class, as it meant having to initialise rooms and computers for each booking
     fun deleteUserBooking(booking: ComputerBooking) : Boolean {
-        if (ExposedBookingDao().userDeleteBookingFromDB(booking)) {
+        // Returns: true if the booking
+        if (bookingsDao.userDeleteBookingFromDB(booking)) {
             return true
         } else {return false}
     }
     abstract fun getUserType(): String
 }
 
-class RegularUser(name: String, password: String, email: String, loggedIn: Boolean = false) : User(name, password, email, loggedIn) {
+class RegularUser(name: String, password: String, email: String) : User(name, password, email) {
     // Regular Subclass of User.
     // Provides the ability to search for rooms, create bookings, view them and cancel them
     override fun getUserType(): String {
@@ -44,7 +50,7 @@ class RegularUser(name: String, password: String, email: String, loggedIn: Boole
     }
 }
 
-class AdminUser(name: String, password: String, email: String, loggedIn: Boolean = false) : User(name, password, email, loggedIn) {
+class AdminUser(name: String, password: String, email: String) : User(name, password, email) {
     // Admin subclass of User.
     // Provides full functionality of the interface, such as editing rooms,
     // deleting rooms, editing users and deleting users.

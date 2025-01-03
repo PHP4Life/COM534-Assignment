@@ -1,4 +1,11 @@
+////////////////////////// MainMenuView.kt //////////////////////////////////////////
+///////////////////////// Author: Edward Kirr ///////////////////////////////////////
+//// Description: Allows the user to filter by building or OS to search for rooms ///
+
 package views
+
+import logic.University
+import logic.User
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -9,10 +16,13 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import logic.University
-import logic.User
+
 
 data class SearchForRoomView(val user: User, val university: University, val bookRoom: Boolean): Screen {
+    // Parameters:
+    // User - The current user logged in
+    // University - The university object created on the previous screen, this acts as the facade class
+    // Boolean - This controls what is done whether the user clicks the search room or book room menu. Additional function
 
     // Had to use the experimental material UI class as the ExposedMenuBox was not implemented fully.
     @OptIn(ExperimentalMaterialApi::class)
@@ -30,9 +40,9 @@ data class SearchForRoomView(val user: User, val university: University, val boo
         val selectedSystem = remember { mutableStateOf("") }
         MaterialTheme {
             Column(Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
-                Row() { Text("Search for Rooms") }
-                Row() { Text("Select a building: ") }
-                Row() {
+                Row { Text("Search for Rooms") }
+                Row { Text("Select a building: ") }
+                Row {
                     ExposedDropdownMenuBox(expanded = expandBuilding.value, onExpandedChange = {
                         expandBuilding.value = !expandBuilding.value
                     }) {
@@ -54,8 +64,8 @@ data class SearchForRoomView(val user: User, val university: University, val boo
                         }
                     }
                 }
-                Row() { Text("Select an operating system: ") }
-                Row() {
+                Row { Text("Select an operating system: ") }
+                Row {
                     ExposedDropdownMenuBox(expanded = expandOS.value, onExpandedChange = {
                         expandOS.value = !expandOS.value
                     }) {
@@ -78,8 +88,8 @@ data class SearchForRoomView(val user: User, val university: University, val boo
                         }
                     }
                 }
-                Row() {
-                    Column() {Button(onClick = {
+                Row {
+                    Column {Button(onClick = {
                         //TODO: Allows you to look at all the rooms in the building or filter all the rooms in the building by OS
                         val building = university.findBuildingByName(selectedBuilding.value)
                         val rooms = building?.getRooms()

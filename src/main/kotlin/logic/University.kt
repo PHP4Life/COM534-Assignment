@@ -1,7 +1,11 @@
-/**
- * @author  William Bladon-Whittam
- */
-
+////////////////////////// University.kt ///////////////////////////////////
+///////////////////////// Author: Edward Kirr /////////////////////////////
+//// Originally made by Charles Clark & William Bladon-Whittam for AE1 ///
+//Description: Used to stored building objects and interact with them, //
+// this acts as the facade class for the building class and room class /
+//////////// In this program, it's also a singleton, //////////////////
+////////// as only one instance of the class is made /////////////////
+/////////////////// through the whole application ///////////////////
 package logic
 
 
