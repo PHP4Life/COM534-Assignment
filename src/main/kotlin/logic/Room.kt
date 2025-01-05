@@ -19,6 +19,9 @@ abstract class Room(
 ) {
     private var computers = mutableListOf<Computer>()
 
+    // All computers in a given room have the same operating system  (Windows, Linux or Mac).
+    // Room acts as the abstract class - then use specific OS Room subclasses.
+
     abstract fun getOperatingSystem(): String
 
     fun addComputer(computer: Computer) {
@@ -65,24 +68,6 @@ abstract class Room(
         return bookings
     }
 
-//    fun getBookingsByDayTime(day: String, time: String): MutableList<ComputerBooking> {
-//        // TODO: This is now replaced by the a computer method
-//        val bookings = mutableListOf<ComputerBooking>()
-//        for (computer in computers) {
-//            for (booking in computer.getBookings()) {
-//                if (booking.day == day && booking.timeSlot == time) {
-//                    bookings.add(booking)
-//                }
-//            }
-//        }
-//        return bookings
-//    }
-
-//    fun updateComputersGlobalId() {
-//        for (computer in computers) {
-//            computer.updateGlobalId()
-//        }
-//    }
 
     override fun toString(): String {
         return "Room $roomNumber in building ${building.name} OS: ${getOperatingSystem()} Computers: $computers"

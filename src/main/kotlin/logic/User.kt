@@ -22,16 +22,17 @@ abstract class User(var name: String,  var password: String, var email: String) 
     // subclasses (admin & regular) to based off of
     private val bookingsDao: BookingDao = ExposedBookingDao()
 
-    //TODO: I was unable to successfully implement this in the booking class, as it meant having to initialise rooms and computers for each booking
+
     fun getUserBookings() : List<ComputerBooking> {
         //Returns: A list of computer bookings made that contain the user's name
         // Interacts with the Bookings DAO to get bookings, which are filtered by the username
         return  bookingsDao.getBookingsByUserFromDB(name)
     }
 
-    //TODO: I was unable to successfully implement this in the booking class, as it meant having to initialise rooms and computers for each booking
+
     fun deleteUserBooking(booking: ComputerBooking) : Boolean {
-        // Returns: true if the booking
+        // Parameters: a Computer booking made by the user
+        // Returns: true if the booking was successfully deleted
         if (bookingsDao.userDeleteBookingFromDB(booking)) {
             return true
         } else {return false}
@@ -45,7 +46,6 @@ class RegularUser(name: String, password: String, email: String) : User(name, pa
     override fun getUserType(): String {
         // Responsible for identifying the user type
         // Return a string of the user type
-        // TODO: Changed this to return this what user type this is
         return "Regular"
     }
 }
@@ -57,7 +57,6 @@ class AdminUser(name: String, password: String, email: String) : User(name, pass
     override fun getUserType(): String {
         // Responsible for identifying the user type
         // Return a string of the user type
-        // TODO: Changed this to return this what user type this is
         return "Admin"
     }
 }

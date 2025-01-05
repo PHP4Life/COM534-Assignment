@@ -35,7 +35,7 @@ data class SearchForRoomView(val user: User, val university: University, val boo
         val selectedBuilding = remember { mutableStateOf("") }
 
         val expandOS = remember { mutableStateOf(false) }
-        // TODO: This is a limitation as if there is another OS to be added i.e. OpenBSD, this has to be programmatically added. If were to redo this
+        // This is a limitation as if there is another OS to be added i.e. OpenBSD, this has to be programmatically added. If were to redo this
         val operatingSystems = listOf("Windows", "Mac", "Linux")
         val selectedSystem = remember { mutableStateOf("") }
         MaterialTheme {
@@ -90,7 +90,7 @@ data class SearchForRoomView(val user: User, val university: University, val boo
                 }
                 Row {
                     Column {Button(onClick = {
-                        //TODO: Allows you to look at all the rooms in the building or filter all the rooms in the building by OS
+                        // Allows you to look at all the rooms in the building or filter all the rooms in the building by OS
                         val building = university.findBuildingByName(selectedBuilding.value)
                         val rooms = building?.getRooms()
                         val roomsOS = rooms?.filter {it.getOperatingSystem() == selectedSystem.value}

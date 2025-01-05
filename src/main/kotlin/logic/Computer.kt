@@ -39,7 +39,6 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         /**
          * Add a booking to the Computer. Make sure that there is not already a booking for that computer.
          */
-        //TODO:  Changed this function for addition checking and simplified short circuit evaluation,
         return bookings.none { it.computerId == booking.computerId && it.day == booking.day && it.timeSlot == booking.timeSlot } && computerBookingsDao.insertBooking(booking)
     }
 
@@ -47,8 +46,6 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         /**
          * Delete a Computer booking. Make sure that the booking exists before trying to delete it.
          */
-
-        //TODO: Change to use .any as opposed to .none
         return if (bookings.any {
                 it.computerId == booking.computerId &&
                         it.day == booking.day &&
@@ -77,12 +74,6 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         return bookings.filter{it.day == day && it.timeSlot == timeSlot && it.computerId == globalId}
     }
 
-//    fun isComputerBooked(day: String, timeSlot: String): Boolean {
-//        /**
-//         * Checks if a specific time and day is booked for the computer.
-//         */
-//        return bookings.any { it.day == day && it.timeSlot == timeSlot }
-//    }
 
     private fun isDateTimeBooked(day: String, timeSlot: String, computerId: String): Boolean {
         /**
@@ -108,9 +99,6 @@ class Computer(val computerNumber: Int, val computerRoom: Room,
         return availableBookingSlots
     }
 
-//    fun updateGlobalId() { // TODO Remove, no longer required.
-//        globalId = "${computerRoom.building.code}${computerRoom.roomNumber}-$computerNumber"
-//    }
 
     override fun toString() : String {
         return globalId

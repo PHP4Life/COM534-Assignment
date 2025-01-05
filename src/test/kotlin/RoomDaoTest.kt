@@ -85,6 +85,36 @@ class RoomDaoTests {
     }
 
     @Test
+    fun testGetRoomsFromDBMultiple() {
+        transaction(database!!) {
+            SchemaUtils.create(Rooms)
+
+            university.createBuilding("UniBuilding", "UB")
+            Rooms.insert {
+                it[roomNumber] = 102
+                it[building] = "UniBuilding"
+                it[operatingSystem] = "Windows"
+                it[timeSlots] = "9am-11am, 11am-1pm"
+                it[daysOfWeek] = "Monday, Tuesday"
+                it[numOfComputers] = 5
+            }
+
+            Rooms.insert {
+                it[roomNumber] = 202
+                it[building] = "UniBuilding"
+                it[operatingSystem] = "Linux"
+                it[timeSlots] = "9am-11am, 11am-1pm"
+                it[daysOfWeek] = "Monday, Tuesday, Wednesday"
+                it[numOfComputers] = 10
+            }
+            val rooms = roomDao.getRoomsFromDB("UniBuilding", university)
+            assertEquals("Windows", rooms[0].getOperatingSystem())
+            assertEquals("Linux", rooms[1].getOperatingSystem())
+        }
+    }
+
+
+    @Test
     fun testGetRoomsFromDBBuildingNotFound() {
         transaction(database!!) {
             SchemaUtils.create(Rooms)

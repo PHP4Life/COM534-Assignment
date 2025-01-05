@@ -23,7 +23,7 @@ class Building(val name: String, val code: String, private val university: Unive
     }
 
     private fun addRoom(room: Room) {
-        // Adds a room the class' mutable list
+        // Adds a room to the class' mutable list
         rooms.add(room)
     }
 
@@ -68,7 +68,6 @@ class Building(val name: String, val code: String, private val university: Unive
     }
 
     fun updateRoomType(room: Room, newOSType: String) : Boolean {
-        // TODO: Updated function to update the database and add the newly updated object to the building list. Now returns a boolean to the GUI
         /**
          * To update a room type, the room in the rooms list, is replaced with an updated class for the room
          * type, all values and computers are transferred
@@ -109,7 +108,6 @@ class Building(val name: String, val code: String, private val university: Unive
 //    }
 
     fun findRoomByNumber (number: Int) : Room? {
-        // TODO: Changed this to call the get rooms method, which retrieves from the database
         getRooms()
         return rooms.find { it.roomNumber == number }
     }

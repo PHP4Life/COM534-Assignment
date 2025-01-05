@@ -43,7 +43,7 @@ data class SearchDailyBookingsView(val university: University) : Screen {
         val expandDay = remember { mutableStateOf(false) }
         val selectedDay = remember { mutableStateOf("Select a day...") }
 
-// TODO: Tried to use generics to create custom expanded drop down but due to the extra logic and checks in the room drop down, this would add a lot of complexity
+        // Tried to use generics to create custom expanded drop down but due to the extra logic and checks in the room drop down, this would add a lot of complexity
         MaterialTheme {
             Column(Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
                 Row() { Text("Search for Bookings by Day & Room", fontWeight = FontWeight.Bold) }

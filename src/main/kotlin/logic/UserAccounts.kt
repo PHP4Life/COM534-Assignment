@@ -17,7 +17,6 @@ class UserAccounts(private val userDao: UserDao = ExposedUserDao()) {
 
     fun getUsers(): List<User> {
         //Returns: A List of users from the DB
-        // TODO: This now gets the users from the db, add_users is not longer used
         val usersFromDB = userDao.getUsersFromDB()
         for (userDB in usersFromDB) {users.add(userDB)}
         return usersFromDB
@@ -40,25 +39,6 @@ class UserAccounts(private val userDao: UserDao = ExposedUserDao()) {
         }
     }
 
-//    fun addUsers() : String {
-//        // Adds users to the mutable list in the UserAccounts Object
-//        // based on the data entered. This is added to the accounts object's list
-//        // Returns: A string message to notify what user was added.
-//        //TODO: Removed, this is now apart of  the signup suersChange to be able to add users
-//        val usersFromDB = ExposedUserDao().getUsersFromDB()
-//        for (userDB in usersFromDB) {users.add(userDB)}
-//
-//        return when (user) {
-//            is AdminUser -> "Admin user added: ${user.name} \n"
-//            else -> "Regular user added: ${user.name} \n"
-//        }
-//    }
-
-//    fun deleteUser(user: User) {
-//        //TODO: No longer used as the scope of requirements did not cover this
-//        users.remove(user)
-//    }
-
     override fun toString(): String {
         // Overrides the method to print an itemised list of all the users and its account types (i.e. admin, regular
         // Returns: A string list of users
@@ -72,12 +52,5 @@ class UserAccounts(private val userDao: UserDao = ExposedUserDao()) {
         }
         return userList.toString()
     }
-
-//    fun isEmpty(): Boolean {
-//        // Checks to see if list is empty
-//        // Returns: True if the list is empty or false if it has items
-//        // TODO: Remove - No longer used
-//        return users.isEmpty()
-//    }
 
 }

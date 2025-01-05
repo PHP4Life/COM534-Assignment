@@ -131,7 +131,7 @@ data class AddNewRoomView(val university: University) : Screen {
                 }
 
                 Row() { Button(onClick = {
-                    // TODO: This approach takes a more proactive approach as I am explicitly checking if the variable is null or not
+                    // This approach takes a more proactive approach as I am explicitly checking if the variable is null or not
                     try {
                         val roomExists = selectedBuilding.value?.findRoomByNumber(roomNumber.value.toInt())
                         if (roomExists?.roomNumber == roomNumber.value.toIntOrNull()) {
